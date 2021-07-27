@@ -12,6 +12,7 @@ import traceback
 import typing
 import re
 
+from spotfire import fast_sbdf
 from spotfire import sbdf, _utils
 
 
@@ -89,7 +90,7 @@ class AnalyticInput:
             globals_dict[self.name] = None
             return
         debug_fn("assigning %s '%s' from file %s" % (self.type, self.name, self.file))
-        dataframe = sbdf.import_data(self.file)
+        dataframe = fast_sbdf.import_data(self.file)
         debug_fn("read %d rows %d columns" % (dataframe.shape[0], dataframe.shape[1]))
         try:
             table_meta = dataframe.spotfire_table_metadata
@@ -147,6 +148,7 @@ class AnalyticOutput:
         """
         debug_fn("returning '%s' as file %s" % (self.name, self.file))
         sbdf.export_data(globals_dict[self.name], self.file, default_column_name=self.name)
+
 
 
 class AnalyticResult:
